@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 const validateEmptyInputSignUp = function(req, res, next) {
     var emptyInputs = [];
     var errorMessage = "";
@@ -95,10 +97,28 @@ const validateTypeInputSignIn = (req, res, next) => {
     return next();
 }
 
+const authenticationEndPoint = (req, res, next) => {
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({"msg": "É necessário informar o token!"});
+    }
+
+    try {
+        jwt.verify(token, process.env.SECRET);
+        return next();
+
+    } catch (error) {
+        return res.status(401).json({"msg": "Token inválido!"});
+    }
+}
+
 export {
     validateEmptyInputSignUp,
     validateTypeInputSignUp,
 
     validateEmptyInputSignIn,
-    validateTypeInputSignIn
+    validateTypeInputSignIn,
+
+    authenticationEndPoint
 }

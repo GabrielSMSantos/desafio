@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import connection from "../models/connection.js";
 import { compareSync, hashSync } from "bcrypt";
 class UserController {
@@ -31,16 +32,23 @@ class UserController {
             if (error) {
                 return res.status(500).send("Ocorreu um erro no banco de dados!");
             } else if (result.length) {
-                var passwordValid = false;
+                var userFound = {};
                 result.forEach((user) => {
                     var checkPassword = compareSync(req.body.password, user.password);
                     if (checkPassword) {
-                        passwordValid = true;
+                        userFound = {...user};
                     }
                 });
                 
-                if (passwordValid) {
-                    return res.status(200).send("Logou!!");
+                if (userFound.id) {
+                    const token = jwt.sign(
+                        {
+                            id: userFound.id,
+                            email: userFound.email
+                        },
+                        process.env.SECRET
+                    );
+                    return res.status(200).json({token});
                 } else {
                     return res.status(401).send("Email ou password inválidos!");
                 }
