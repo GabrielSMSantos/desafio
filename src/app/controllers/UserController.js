@@ -15,7 +15,7 @@ class UserController {
         const sql = "INSERT INTO users SET ?";
         connection.query(sql, data, (error, result) => {
             if (error) {
-                return res.status(500).send("Ocorreu um erro no banco de dados!");
+                return res.status(500).json({"msg":"Ocorreu um erro no banco de dados!"});
             } else {
                 return res.status(200).json({
                     id: result.insertId,
@@ -30,7 +30,7 @@ class UserController {
         const sql = `SELECT id,email,password,telephones,created_at,modified_at FROM users WHERE email="${req.body.email}"`;
         connection.query(sql, (error, result) => {
             if (error) {
-                return res.status(500).send("Ocorreu um erro no banco de dados!");
+                return res.status(500).json({"msg":"Ocorreu um erro no banco de dados!"});
             } else if (result.length) {
                 var userFound = {};
                 result.forEach((user) => {
@@ -50,10 +50,10 @@ class UserController {
                     );
                     return res.status(200).json({token});
                 } else {
-                    return res.status(401).send("Email ou password inválidos!");
+                    return res.status(401).json({"msg":"Email ou password inválidos!"});
                 }
             } else {
-                return res.status(401).send("Email ou password inválidos!");
+                return res.status(401).json({"msg":"Email ou password inválidos!"});
             }
         });
     }
@@ -62,7 +62,7 @@ class UserController {
         const sql = "SELECT id,email,telephones,created_at,modified_at FROM users WHERE id=?";
         connection.query(sql, req.params.id, (error, result) => {
             if (error) {
-                return res.status(500).send("Ocorreu um erro no banco de dados!");
+                return res.status(500).json({"msg":"Ocorreu um erro no banco de dados!"});
             } else if (result.length) {
                 const resultParsed = {
                     ...result[0],
@@ -71,7 +71,7 @@ class UserController {
 
                 return res.status(200).json(resultParsed);
             } else {
-                return res.status(404).send("Este usuário não existe!");
+                return res.status(404).json({"msg":"Este usuário não existe!"});
             }
         });
     }

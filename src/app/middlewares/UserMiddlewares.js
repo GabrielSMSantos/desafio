@@ -35,7 +35,7 @@ const validateEmptyInputSignUp = function(req, res, next) {
     }
 
     if (errorMessage) {
-        return res.status(400).send(errorMessage);
+        return res.status(400).json({"msg":errorMessage});
     }
 
     return next();
@@ -75,7 +75,7 @@ const validateTypeInputSignUp = function(req, res, next) {
     }
 
     if (errorMessage) {
-        return res.status(400).send(errorMessage);
+        return res.status(400).json({"msg":errorMessage});
     }
 
     return next();
@@ -83,7 +83,7 @@ const validateTypeInputSignUp = function(req, res, next) {
 
 const validateEmptyInputSignIn = (req, res, next) => {
     if (!req.body.email || !req.body.password) {
-        return res.status(400).send("Informe os campos email e password para o login!");
+        return res.status(400).json({"msg":"Informe os campos email e password para o login!"});
     }
 
     return next();
@@ -91,7 +91,7 @@ const validateEmptyInputSignIn = (req, res, next) => {
 
 const validateTypeInputSignIn = (req, res, next) => {
     if (typeof req.body.email != "string" || typeof req.body.password != "string") {
-        return res.status(400).send("Os campos email e password devem ser do tipo string!");
+        return res.status(400).json({"msg":"Os campos email e password devem ser do tipo string!"});
     }
 
     return next();
