@@ -22,6 +22,8 @@ class CustomerRequest extends FormRequest
      */
     public function rules(): array
     {
+        session()->flash('status', 'warning');
+        session()->flash('message', 'Atenção, Campos inválidos!');
         return [
             'cpf'   => [
                         'required',

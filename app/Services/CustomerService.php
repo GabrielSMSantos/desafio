@@ -20,8 +20,11 @@ class CustomerService
                 'gender' => $request->gender,
             ]);
 
+            session()->flash('status', 'success');
+            session()->flash('message', 'Cliente criado com sucesso!');
         } catch (QueryException $error) {
-            dd($error);
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao criar cliente.');
         }
     }
 
@@ -37,8 +40,11 @@ class CustomerService
                 'gender' => $request->gender,
             ]);
 
+            session()->flash('status', 'success');
+            session()->flash('message', 'Cliente editado com sucesso!');
         } catch (QueryException $error) {
-            dd($error);
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao editar cliente.');
         }
     }
 
@@ -47,8 +53,11 @@ class CustomerService
         try {
             $customer->delete();
 
+            session()->flash('status', 'success');
+            session()->flash('message', 'Cliente deletado com sucesso!');
         } catch (QueryException $error) {
-            dd($error);
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao deletar cliente.');
         }
     }
 }
